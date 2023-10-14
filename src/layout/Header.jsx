@@ -11,12 +11,12 @@ export default function Header() {
       </div>
 
       <hr className=" justify-item-center" />
-      <div className="flex justify-center py-2">
-        <img src={logoImg} alt="logo" width={138} />
+      <div className="flex justify-center py-1">
+        <img src={logoImg} alt="logo" width={120} />
       </div>
       <hr className=" justify-item-center w-full" />
 
-      <div className="flex justify-between py-2 ">
+      <div className="flex justify-between px-20 py-1  text-base ">
         <div className=" hover:text-stone-400 pl-20">PRODUCT</div>
         <div className=" hover:text-stone-400">LIVINGROOM</div>
         <div className=" hover:text-stone-400">DINNING ROOM</div>

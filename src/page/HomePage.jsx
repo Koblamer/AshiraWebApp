@@ -1,11 +1,13 @@
+import NewArrivals from "../components/homepage/NewArrivals";
 import SlideBanner from "../components/homepage/SlideBanner";
-import Body from "../components/homepage/body";
+import WelcomeTo from "../components/homepage/WelcomeTo";
 
 const HomePage = () => {
   return (
-    <div className="flex justify-center p-4">
+    <div className="justify-center p-4">
       <SlideBanner />
-      <Body />
+      <NewArrivals />
+      <WelcomeTo />
     </div>
   );
 };
