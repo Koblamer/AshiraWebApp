@@ -9,6 +9,11 @@ const router = createBrowserRouter([
     element: <Layout />,
     children: [{ path: "", element: <HomePage /> }],
   },
+  // {
+  //   path: "/product",
+  //   element: <Layout />,
+  //   children: [{ path: "", element: <Product /> }],
+  // },
 ]);
 
 export default function Route() {

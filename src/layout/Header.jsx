@@ -1,4 +1,4 @@
-import logoImg from "../assets/Logo/ASHIRA_BRAND.png";
+import logoHeader from "../assets/Logo/ASHIRA_BRAND.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 
@@ -12,7 +12,7 @@ export default function Header() {
 
       <hr className=" justify-item-center" />
       <div className="flex justify-center py-1">
-        <img src={logoImg} alt="logo" width={120} />
+        <img src={logoHeader} alt="logo" width={120} />
       </div>
       <hr className=" justify-item-center w-full" />
 
