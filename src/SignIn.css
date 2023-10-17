@@ -1,0 +1,8 @@
+.inputUnderLine {
+  width: 100%;
+  padding: 4px 80px;
+  margin: 5px;
+  box-sizing: border-box;
+  border: none;
+  border-bottom: 1px solid;
+}
