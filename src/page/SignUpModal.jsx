@@ -1,16 +1,19 @@
-import SignUpContainer from "../features/auth/SignUpContainer";
+import SignInContainer from "../features/auth/SignInContainer";
 import SignUpContent from "../features/auth/SignUpContent";
 import SignUpForm from "../features/auth/SignUpForm";
 import SignUpExit from "../features/auth/SignUpExit";
-import SignUpInput from "../features/auth/SignUpInput";
 
-export default function SignUpModal() {
+export default function SignUpModal(props) {
   return (
-    <div className="shadow-md max-w-max ">
-      <SignUpExit />
-      <SignUpContent />
-      <SignUpForm />
-      <SignUpContainer />
+    <div className="modal-overlay">
+      <div className="shadow-md modal-content">
+        <SignUpExit toggleSignUpModal={props.toggleSignUpModal} />
+        <SignUpContent />
+        <SignUpForm />
+        <SignInContainer
+          closeSignUpAndBackToSignIn={props.closeSignUpAndBackToSignIn}
+        />
+      </div>
     </div>
   );
 }

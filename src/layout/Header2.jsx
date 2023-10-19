@@ -2,12 +2,33 @@ import logoHeader from "../assets/Logo/ASHIRA_BRAND.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
+import SignInModal from "../page/SignInModal";
+import SignUpModal from "../page/SignUpModal";
+import { useState } from "react";
 
 export default function Header2() {
   const navigate = useNavigate();
+  const [showSignInModal, setShowSignInModal] = useState(false);
+  const [showSignUpModal, setShowSignUpModal] = useState(false);
+
   const goToHomePage = () => {
     navigate("/");
   };
+
+  const toggleSignInModal = () => {
+    setShowSignInModal(!showSignInModal);
+  };
+
+  const toggleSignUpModal = () => {
+    setShowSignInModal(false);
+    setShowSignUpModal(!showSignUpModal);
+  };
+
+  const closeSignUpAndBackToSignIn = () => {
+    setShowSignInModal(true);
+    setShowSignUpModal(false);
+  };
+
   return (
     <header className="px-4 bg-white sticky top-0 z-30 text-neutral-500 cursor-default">
       <div className="flex justify-end text-xs">
@@ -315,11 +336,30 @@ export default function Header2() {
             <div className="justify-items-start py-1 pl-5 pr-20 hover:text-stone-400 ">
               <FontAwesomeIcon icon={faMagnifyingGlass} />
             </div>
-            <div className="hover:text-stone-400 py-1">SIGN IN</div>
+            <div
+              className="hover:text-stone-400 py-1"
+              onClick={toggleSignInModal}
+            >
+              SIGN IN
+            </div>
           </div>
         </div>
       </div>
       <hr className=" justify-item-center w-full" />
+      {showSignInModal && (
+        <SignInModal
+          toggleSignInModal={toggleSignInModal}
+          toggleSignUpModal={toggleSignUpModal}
+        />
+      )}
+
+      {showSignUpModal && (
+        <SignUpModal
+          toggleSignUpModal={toggleSignUpModal}
+          toggleSignInModal={toggleSignInModal}
+          closeSignUpAndBackToSignIn={closeSignUpAndBackToSignIn}
+        />
+      )}
     </header>
   );
 }

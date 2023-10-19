@@ -1,26 +1,75 @@
+/* eslint-disable react/prop-types */
 import { useState } from "react";
 // import { toast } from "react-toastify/dist/components";
 import SignInButton from "../auth/SignInButton";
 import SignInInput from "../auth/SignInInput";
 import LoginWithFacebookButton from "./LoginWithFacebookButton";
+import { toast } from "react-toastify";
+import Joi from "joi";
+import InputErrorMessage from "../auth/InputErrorMessage";
+import axios from "../../config/axios";
+import { useNavigate } from "react-router-dom";
+
+const signInSchema = Joi.object({
+  email: Joi.string().email({ tlds: false }),
+  password: Joi.string()
+    .pattern(/^[a-zA-Z0-9]{6,30}$/)
+    .trim()
+    .required(),
+});
+
+const validateSignIn = (input) => {
+  const { error } = signInSchema.validate(input, { abortEarly: false });
+
+  if (error) {
+    const result = error.details.reduce((acc, el) => {
+      const { message, path } = el;
+      acc[path[0]] = message;
+      return acc;
+    }, {});
+    return result;
+  }
+};
 
 export default function SignInForm() {
   const [input, setInput] = useState({
-    emailOrMobile: "",
+    email: "",
     password: "",
   });
+
+  const navigate = useNavigate();
+  const [error, setError] = useState({});
+
+  const handleSubmitForm = async (e) => {
+    try {
+      e.preventDefault();
+      const validationError = validateSignIn(input);
+      if (validationError) {
+        return setError(validationError);
+      }
+      setError({});
+      const form = { ...input };
+      delete form.confirmPassword;
+      await axios.post("auth/signin", form);
+      alert("Sign In success");
+      navaigate("/");
+    } catch (err) {
+      console.log(err);
+      toast.error(err);
+    }
+  };
+  console.log(input);
 
   return (
     <div>
       <form className="grid justify-center m-10 ">
         <div className="my-2 text-left ">
           <SignInInput
-            placeholder="Email address or phone number"
-            value={input.emailOrMobile}
-            onChange={(e) =>
-              setInput({ ...input, emailOrMobile: e.target.value })
-            }
+            placeholder="Email address"
+            value={input.email}
+            onChange={(e) => setInput({ ...input, email: e.target.value })}
           />
+          {error.email && <InputErrorMessage message={error.email} />}
         </div>
         <div className="my-2">
           <SignInInput
@@ -29,6 +78,7 @@ export default function SignInForm() {
             value={input.password}
             onChange={(e) => setInput({ ...input, password: e.target.value })}
           />
+          {error.password && <InputErrorMessage message={error.password} />}
         </div>
       </form>
       <div className="m-5 mt-14">

@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import axios from "../config/axios";
 import Header2 from "../layout/Header2";
+import ProductCard from "../components/ProductPage/ProductCard";
+import ShowProductLimit from "../components/ProductPage/ShowProductLimit";
 
 const ProductsPage = () => {
   const [product, setProduct] = useState(null);
@@ -31,6 +33,24 @@ const ProductsPage = () => {
   return (
     <>
       <Header2 />
+      <div className="items-right">
+        <ShowProductLimit />
+      </div>
+      <div className="grid grid-cols-3 mt-10">
+        <ProductCard />
+        <ProductCard />
+        <ProductCard />
+        <ProductCard />
+        <ProductCard />
+        <ProductCard />
+        <ProductCard />
+        <ProductCard />
+        <ProductCard />
+        <ProductCard />
+        <ProductCard />
+        <ProductCard />
+      </div>
+
       {product?.data && (
         <>
           {product?.data.products.map((p) => {

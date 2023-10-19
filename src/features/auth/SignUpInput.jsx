@@ -1,5 +1,3 @@
-import PropTypes from "prop-types";
-
 export default function SignUpInput({
   placeholder,
   type = "text",
@@ -16,10 +14,3 @@ export default function SignUpInput({
     />
   );
 }
-
-SignUpInput.propTypes = {
-  placeholder: PropTypes.string,
-  type: PropTypes.string,
-  value: PropTypes.string,
-  onChange: PropTypes.string,
-};
