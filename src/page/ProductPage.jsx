@@ -1,10 +1,34 @@
 import { useEffect, useState } from "react";
 import axios from "../config/axios";
 import Header2 from "../layout/Header2";
-import ProductCard from "../components/ProductPage/ProductCard";
-import ShowProductLimit from "../components/ProductPage/ShowProductLimit";
+import ProductCard from "../components/ProductLists/ProductCard";
+import ShowProductLimit from "../components/ProductLists/ShowProductLimit";
+
+import { useNavigate } from "react-router-dom";
+
+const mockProductList = [
+  {
+    id: 1,
+  },
+  {
+    id: 2,
+  },
+  {
+    id: 3,
+  },
+  {
+    id: 4,
+  },
+  {
+    id: 5,
+  },
+  {
+    id: 6,
+  },
+];
 
 const ProductsPage = () => {
+  const navigate = useNavigate();
   const [product, setProduct] = useState(null);
 
   console.log(window.location.pathname);
@@ -15,8 +39,13 @@ const ProductsPage = () => {
   console.log(search);
   console.log("DEPARTMENT", department);
   console.log("CAREGORY", category);
-  //USEEFFECT  ถ้าไม่ใส่[]ทำงานทุกครั้งที่มีสเตทเปลี่ยนแปลง แต่ถ้าใส่ จะทำครั้งเดียวตอนรีโหลดหน้า
 
+  const goToProductDetails = (id) => {
+    console.log(id);
+    navigate("/product-details");
+  };
+
+  //USEEFFECT  ถ้าไม่ใส่[]ทำงานทุกครั้งที่มีสเตทเปลี่ยนแปลง แต่ถ้าใส่ จะทำครั้งเดียวตอนรีโหลดหน้า
   useEffect(() => {
     const getProduct = async () => {
       const res = await axios.get(
@@ -33,25 +62,20 @@ const ProductsPage = () => {
   return (
     <>
       <Header2 />
-      <div className="items-right">
+      <div className="flex justify-end px-20 py-10">
         <ShowProductLimit />
       </div>
-      <div className="grid grid-cols-3 mt-10">
-        <ProductCard />
-        <ProductCard />
-        <ProductCard />
-        <ProductCard />
-        <ProductCard />
-        <ProductCard />
-        <ProductCard />
-        <ProductCard />
-        <ProductCard />
-        <ProductCard />
-        <ProductCard />
-        <ProductCard />
+      <div className="grid grid-cols-3 px-20 ">
+        {mockProductList.map((p, i) => {
+          return (
+            <div key={i} onClick={() => goToProductDetails(p.id)}>
+              <ProductCard />
+            </div>
+          );
+        })}
       </div>
 
-      {product?.data && (
+      {/* {product?.data && (
         <>
           {product?.data.products.map((p) => {
             return (
@@ -70,7 +94,7 @@ const ProductsPage = () => {
             );
           })}
         </>
-      )}
+      )} */}
     </>
   );
 };

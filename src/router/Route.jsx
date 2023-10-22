@@ -6,6 +6,10 @@ import ProductPage from "../page/ProductPage";
 // import OrderPage from "../page/OrderPage";
 import SignInModal from "../page/SignInModal";
 import SignUpModal from "../page/SignUpModal";
+import ProductDetailsPage from "../page/ProductDetailsPage";
+import OrderSummaryPage from "../page/OrderSummaryPage";
+import PaymentPage from "../page/PaymentPage";
+import UploadPaymentModal from "../page/UploadPaymentModal";
 
 const router = createBrowserRouter([
   {
@@ -34,6 +38,38 @@ const router = createBrowserRouter([
     element: (
       // <RedirectIfAuthenticated>
       <SignUpModal />
+      // </RedirectIfAuthenticated>
+    ),
+  },
+  {
+    path: "/product-details",
+    element: (
+      // <RedirectIfAuthenticated>
+      <ProductDetailsPage />
+      // </RedirectIfAuthenticated>
+    ),
+  },
+  {
+    path: "/order-summary",
+    element: (
+      // <RedirectIfAuthenticated>
+      <OrderSummaryPage />
+      // </RedirectIfAuthenticated>
+    ),
+  },
+  {
+    path: "/payment",
+    element: (
+      // <RedirectIfAuthenticated>
+      <PaymentPage />
+      // </RedirectIfAuthenticated>
+    ),
+  },
+  {
+    path: "/upload-payment",
+    element: (
+      // <RedirectIfAuthenticated>
+      <UploadPaymentModal />
       // </RedirectIfAuthenticated>
     ),
   },
