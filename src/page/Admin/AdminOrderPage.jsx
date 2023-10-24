@@ -29,8 +29,8 @@ const AdminOrderPage = () => {
             <th>Update Date</th>
             <th></th>
           </tr>
-          {orderDetails.length > 0 &&
-            orderDetails.map((order, i) => {
+          {orderDetails?.length > 0 &&
+            orderDetails?.map((order, i) => {
               return (
                 <tr key={i}>
                   <td>{order.id}</td>

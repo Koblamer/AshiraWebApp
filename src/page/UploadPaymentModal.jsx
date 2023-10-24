@@ -8,7 +8,7 @@ export default function UploadPaymentModal({ setIsOpenPaymentModal }) {
       <div className="shadow-md modal-content w-full m-80">
         <UploadPaymentExit setIsOpenPaymentModal={setIsOpenPaymentModal} />
         <UploadContent />
-        <UploadPaymentForm />
+        <UploadPaymentForm setIsOpenPaymentModal={setIsOpenPaymentModal} />
       </div>
     </div>
   );

@@ -38,7 +38,7 @@ const validateUploadPayment = (input) => {
   }
 };
 
-export default function UploadPaymentForm() {
+export default function UploadPaymentForm({ setIsOpenPaymentModal }) {
   const { shoppingCart } = useProduct();
   const [input, setInput] = useState({
     destinationBank: "",
@@ -79,7 +79,7 @@ export default function UploadPaymentForm() {
       // }
 
       setError({});
-      const form = { ...input };
+      // const form = { ...input };
 
       const userData = JSON.parse(localStorage.getItem("userData"));
       console.log("userData =", userData);
@@ -90,10 +90,11 @@ export default function UploadPaymentForm() {
         products: shoppingCart,
       };
       const res = await axios.post("order/add", productPayload);
-      console.log("res =", res);
+
       // await axios.post("auth/UploadPayment", form);
       alert("Payment Successful");
-      // navigate("/");
+      setIsOpenPaymentModal(false);
+      navigate("/");
     } catch (err) {
       console.log(err);
       toast.error(err);
