@@ -7,14 +7,14 @@ const OrderSummaryPage = () => {
   return (
     <div>
       <Header2 />
-      <div className="grid grid-cols-2">
+      <div className="grid grid-cols-2 m-5">
         <div>
           <ShippingAddress />
         </div>
-        <div>
+        <div className="ml-5">
           <OrderSummary />
         </div>
-        <div>
+        <div className="my-5">
           <ShoppingCart />
         </div>
       </div>

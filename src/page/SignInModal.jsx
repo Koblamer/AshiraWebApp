@@ -9,10 +9,10 @@ export default function SignInModal(props) {
   return (
     <div className="modal-overlay">
       <div className="shadow-md modal-content ">
-        <SignInExit toggleSignInModal={props.toggleSignInModal} />
+        <SignInExit toggleSignInModal={props?.toggleSignInModal} />
         <SignInContent />
-        <SignInForm />
-        <SignUpContainer toggleSignUpModal={props.toggleSignUpModal} />
+        <SignInForm setShowSignInModal={props?.setShowSignInModal} />
+        <SignUpContainer toggleSignUpModal={props?.toggleSignUpModal} />
       </div>
     </div>
   );

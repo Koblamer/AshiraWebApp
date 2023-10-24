@@ -1,7 +1,45 @@
 import { useState } from "react";
+import { toast } from "react-toastify";
 import UploadPaymentInput from "./UploadPaymentInput";
+import UploadPaymentButton from "./UploadPaymentButton";
+import Joi from "joi";
+import UploadPaymentErrorMessage from "./UploadPaymentErrorMessage";
+import axios from "../../config/axios";
+import { useNavigate } from "react-router-dom";
+import { useProduct } from "../../hooks/useProduct";
+
+const UploadPaymentSchema = Joi.object({
+  destinationBank: Joi.string().trim().required(),
+  sourceBank: Joi.string().trim().required(),
+  senderAccountNumber: Joi.string()
+    .pattern(/^[0-9]{10}$/)
+    .required(),
+  senderName: Joi.string().trim().required(),
+  transactionDate: Joi.string()
+    .pattern(/^[0-9]{10}$/)
+    .required(),
+  amount: Joi.number().required(),
+  upload: Joi.string().trim().required(),
+  note: Joi.string(),
+});
+
+const validateUploadPayment = (input) => {
+  const { error } = UploadPaymentSchema.validate(input, {
+    abortEarly: false,
+  });
+
+  if (error) {
+    const result = error.details.reduce((acc, el) => {
+      const { message, path } = el;
+      acc[path[0]] = message;
+      return acc;
+    }, {});
+    return result;
+  }
+};
 
 export default function UploadPaymentForm() {
+  const { shoppingCart } = useProduct();
   const [input, setInput] = useState({
     destinationBank: "",
     sourceBank: "",
@@ -12,10 +50,59 @@ export default function UploadPaymentForm() {
     upload: "",
     note: "",
   });
+  const navigate = useNavigate();
+  const [error, setError] = useState({});
+
+  const sumSubTotal = () => {
+    let sum = 0;
+    if (shoppingCart?.length > 0) {
+      shoppingCart?.forEach((p) => {
+        const total = p?.qty * p?.price;
+        sum = sum + total;
+      });
+      return sum;
+    } else {
+      return sum;
+    }
+  };
+
+  const handleSubmitForm = async (e) => {
+    console.log("handleSubmitForm");
+    try {
+      e.preventDefault();
+      const validationError = validateUploadPayment(input);
+
+      console.log("handleSubmitForm validationError =", validationError);
+
+      // if (validationError) {
+      //   return setError(validationError);
+      // }
+
+      setError({});
+      const form = { ...input };
+
+      const userData = JSON.parse(localStorage.getItem("userData"));
+      console.log("userData =", userData);
+      const productPayload = {
+        userId: userData?.id,
+        total: sumSubTotal(),
+        orderStatus: "PENDDING",
+        products: shoppingCart,
+      };
+      const res = await axios.post("order/add", productPayload);
+      console.log("res =", res);
+      // await axios.post("auth/UploadPayment", form);
+      alert("Payment Successful");
+      // navigate("/");
+    } catch (err) {
+      console.log(err);
+      toast.error(err);
+    }
+  };
 
   return (
-    <div className="my-5 mx-10">
-      <form className="w-full">
+    <div>
+      <form className=" mx-14  w-80 h-90 " onSubmit={handleSubmitForm}>
         <div>
           <UploadPaymentInput
             placeholder="Destination Bank *"
@@ -24,6 +111,9 @@ export default function UploadPaymentForm() {
               setInput({ ...input, destinationBank: e.target.value })
             }
           />
+          {error.destinationBank && (
+            <UploadPaymentErrorMessage message={error.destinationBank} />
+          )}
         </div>
         <div>
           <UploadPaymentInput
@@ -31,6 +121,9 @@ export default function UploadPaymentForm() {
             value={input.sourceBank}
             onChange={(e) => setInput({ ...input, sourceBank: e.target.value })}
           />
+          {error.sourceBank && (
+            <UploadPaymentErrorMessage message={error.sourceBank} />
+          )}
         </div>
         <div>
           <UploadPaymentInput
@@ -40,6 +133,9 @@ export default function UploadPaymentForm() {
               setInput({ ...input, senderAccountNumber: e.target.value })
             }
           />
+          {error.senderAccountNumber && (
+            <UploadPaymentErrorMessage message={error.senderAccountNumber} />
+          )}
         </div>
         <div>
           <UploadPaymentInput
@@ -73,7 +169,15 @@ export default function UploadPaymentForm() {
               setInput({ ...input, uploadReceipt: e.target.value })
             }
           />
-          <div className=" text-[10px]">choose file</div>
+          <div className=" text-[10px]">
+            <input
+              type="file"
+              id="PaymentSlip"
+              name="PaymentSlip"
+              onChange={(e) => console.log(e)}
+            />
+          </div>
+          {/* <div className=" text-[10px]">choose file</div> */}
         </div>
 
         <div>
@@ -82,6 +186,10 @@ export default function UploadPaymentForm() {
             value={input.note}
             onChange={(e) => setInput({ ...input, note: e.target.value })}
           />
+        </div>
+
+        <div className="grid justify-center my-2 ">
+          <UploadPaymentButton />
         </div>
 
         {/* <div>Sender Account Number</div>

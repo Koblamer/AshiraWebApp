@@ -1,19 +1,27 @@
 import logoHeader from "../assets/Logo/ASHIRA_BRAND.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
+import {
+  faMagnifyingGlass,
+  faShoppingCart,
+} from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 import SignInModal from "../page/SignInModal";
 import SignUpModal from "../page/SignUpModal";
 import { useState } from "react";
-// import { faL } from "@fortawesome/free-solid-svg-icons";
+import { useProduct } from "../hooks/useProduct";
 
 export default function Header() {
   const navigate = useNavigate();
+  const { shoppingCart } = useProduct();
   const [showSignInModal, setShowSignInModal] = useState(false);
   const [showSignUpModal, setShowSignUpModal] = useState(false);
 
   const goToHomePage = () => {
     navigate("/");
+  };
+
+  const goToOrderSummaryPage = () => {
+    navigate("/order-summary");
   };
 
   const toggleSignInModal = () => {
@@ -56,41 +64,47 @@ export default function Header() {
             <div className="flex justify-center py-5">
               <div className="flex">
                 <div className="flex flex-col mx-16   ">
-                  <a href="/product" className=" hover:text-stone-400 my-1">
+                  <a
+                    href="/product?department=allproducts&category=seating"
+                    className=" hover:text-stone-400 my-1"
+                  >
                     Seating
                   </a>
-                  <a href="/product" className=" hover:text-stone-400 my-1">
+                  <a
+                    href="/product?department=allproducts&category=tables"
+                    className=" hover:text-stone-400 my-1"
+                  >
                     Tables
                   </a>
                   <a
-                    href="/product?category=bedandmattresses"
+                    href="/product?department=allproducts&category=bedandmattresses"
                     className=" hover:text-stone-400 my-1"
                   >
                     Bed & Mattresses
                   </a>
                   <a
-                    href="/product?category=officechairs"
+                    href="/product?department=allproducts&category=officechairs"
                     className=" hover:text-stone-400 my-1"
                   >
                     Office Chairs
                   </a>
 
                   <a
-                    href="/product?category=officedesks"
+                    href="/product?department=allproducts&category=officedesks"
                     className=" hover:text-stone-400 my-1"
                   >
                     Office Desks
                   </a>
 
                   <a
-                    href="/product?category=outdoortables"
+                    href="/product?department=allproducts&category=outdoortables"
                     className=" hover:text-stone-400 my-1"
                   >
                     Outdoor Tables
                   </a>
 
                   <a
-                    href="/product?category=outdoorsofas"
+                    href="/product?department=allproducts&category=outdoorsofas"
                     className=" hover:text-stone-400 my-1"
                   >
                     Outdoor Sofas
@@ -98,7 +112,7 @@ export default function Header() {
                 </div>
                 <div className="flex flex-col  mx-16  ">
                   <a
-                    href="product?category=lighting"
+                    href="product?department=allproducts&category=lighting"
                     className=" hover:text-stone-400 my-1"
                   >
                     Lighting
@@ -322,7 +336,7 @@ export default function Header() {
           </div>
         </div>
 
-        <div className="flex justify-items-end pr-20">
+        <div className="flex justify-items-end">
           <div className="border border-x-stone-300 "></div>
           <div className="justify-items-start py-1 pl-5 pr-20 hover:text-stone-400 ">
             <FontAwesomeIcon icon={faMagnifyingGlass} />
@@ -333,12 +347,20 @@ export default function Header() {
           >
             SIGN IN
           </div>
+          <div
+            className="justify-items-end py-1 pl-5 hover:text-stone-400 cursor-pointer"
+            onClick={goToOrderSummaryPage}
+          >
+            <FontAwesomeIcon icon={faShoppingCart} />
+            <span className="pl-1">{`(${shoppingCart?.length})`}</span>
+          </div>
         </div>
       </div>
       {showSignInModal && (
         <SignInModal
           toggleSignInModal={toggleSignInModal}
           toggleSignUpModal={toggleSignUpModal}
+          setShowSignInModal={setShowSignInModal}
         />
       )}
       {showSignUpModal && (

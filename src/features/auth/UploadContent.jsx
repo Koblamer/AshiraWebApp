@@ -3,15 +3,15 @@ import logoHeader from "../../assets/Logo/ASHIRA_BRAND.png";
 export default function UploadContent() {
   return (
     <>
-      <div className="flex flex-col items-center -10">
+      <div className="flex flex-col items-center">
         <img
           src={logoHeader}
           alt="logo"
-          width={100}
+          width={80}
           className="cursor-pointer"
         />
       </div>
-      <div className="flex justify-between text-lg px-16 mt-10">
+      <div className="flex justify-between text-md font-semibold px-16 mt-2">
         <div>Payment for invoice</div>
         <div>#661011099</div>
       </div>

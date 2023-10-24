@@ -1,18 +1,27 @@
 import logoHeader from "../assets/Logo/ASHIRA_BRAND.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
+import {
+  faMagnifyingGlass,
+  faShoppingCart,
+} from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 import SignInModal from "../page/SignInModal";
 import SignUpModal from "../page/SignUpModal";
 import { useState } from "react";
+import { useProduct } from "../hooks/useProduct";
 
 export default function Header2() {
   const navigate = useNavigate();
+  const { shoppingCart } = useProduct();
   const [showSignInModal, setShowSignInModal] = useState(false);
   const [showSignUpModal, setShowSignUpModal] = useState(false);
 
   const goToHomePage = () => {
     navigate("/");
+  };
+
+  const goToOrderSummaryPage = () => {
+    navigate("/order-summary");
   };
 
   const toggleSignInModal = () => {
@@ -341,6 +350,13 @@ export default function Header2() {
               onClick={toggleSignInModal}
             >
               SIGN IN
+            </div>
+            <div
+              className="justify-items-end py-1 pl-5 hover:text-stone-400  cursor-pointer"
+              onClick={goToOrderSummaryPage}
+            >
+              <FontAwesomeIcon icon={faShoppingCart} />
+              <span className="pl-1">{`(${shoppingCart?.length})`}</span>
             </div>
           </div>
         </div>

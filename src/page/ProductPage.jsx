@@ -1,31 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import axios from "../config/axios";
 import Header2 from "../layout/Header2";
 import ProductCard from "../components/ProductLists/ProductCard";
 import ShowProductLimit from "../components/ProductLists/ShowProductLimit";
 
 import { useNavigate } from "react-router-dom";
-
-const mockProductList = [
-  {
-    id: 1,
-  },
-  {
-    id: 2,
-  },
-  {
-    id: 3,
-  },
-  {
-    id: 4,
-  },
-  {
-    id: 5,
-  },
-  {
-    id: 6,
-  },
-];
 
 const ProductsPage = () => {
   const navigate = useNavigate();
@@ -42,22 +21,21 @@ const ProductsPage = () => {
 
   const goToProductDetails = (id) => {
     console.log(id);
-    navigate("/product-details");
+    navigate(`/product-details?id=${id}`);
   };
+
+  const getProduct = useCallback(async () => {
+    const res = await axios.get(
+      `/product?department=${department || "allproducts"}&category=${category}`
+    );
+    console.log("Product =", res?.data?.products);
+    setProduct(res?.data?.products);
+  }, [category, department]);
 
   //USEEFFECT  ถ้าไม่ใส่[]ทำงานทุกครั้งที่มีสเตทเปลี่ยนแปลง แต่ถ้าใส่ จะทำครั้งเดียวตอนรีโหลดหน้า
   useEffect(() => {
-    const getProduct = async () => {
-      const res = await axios.get(
-        `/product?department=${
-          department || "allproducts"
-        }&category=${category}`
-      );
-      console.log("Product =", res);
-      setProduct(res);
-    };
     getProduct();
-  }, []);
+  }, [getProduct]);
 
   return (
     <>
@@ -66,13 +44,18 @@ const ProductsPage = () => {
         <ShowProductLimit />
       </div>
       <div className="grid grid-cols-3 px-20 ">
-        {mockProductList.map((p, i) => {
-          return (
-            <div key={i} onClick={() => goToProductDetails(p.id)}>
-              <ProductCard />
-            </div>
-          );
-        })}
+        {product &&
+          product?.map((p, i) => {
+            return (
+              <div key={i} onClick={() => goToProductDetails(p.id)}>
+                <ProductCard
+                  img={p?.imageUrl}
+                  name={p?.name}
+                  price={p?.price}
+                />
+              </div>
+            );
+          })}
       </div>
 
       {/* {product?.data && (

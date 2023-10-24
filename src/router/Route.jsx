@@ -9,7 +9,10 @@ import SignUpModal from "../page/SignUpModal";
 import ProductDetailsPage from "../page/ProductDetailsPage";
 import OrderSummaryPage from "../page/OrderSummaryPage";
 import PaymentPage from "../page/PaymentPage";
-import UploadPaymentModal from "../page/UploadPaymentModal";
+import AdminLayout from "../layout/AdminLayout";
+import AdminPage from "../page/AdminPage";
+import AdminOrderPage from "../page/Admin/AdminOrderPage";
+// import UploadPaymentModal from "../page/UploadPaymentModal";
 
 const router = createBrowserRouter([
   {
@@ -18,12 +21,19 @@ const router = createBrowserRouter([
     children: [{ path: "", element: <HomePage /> }],
   },
   {
+    path: "/admin",
+    element: <AdminLayout />,
+    children: [{ path: "", element: <AdminPage /> }],
+  },
+  {
+    path: "/admin",
+    element: <AdminLayout />,
+    children: [{ path: "order", element: <AdminOrderPage /> }],
+  },
+  {
     path: "/product",
     element: <Layout />,
-    children: [
-      { path: "", element: <ProductPage /> },
-      // { path: "/:id", element: <ProductPage /> },
-    ],
+    children: [{ path: "", element: <ProductPage /> }],
   },
   {
     path: "/signin",
@@ -65,14 +75,14 @@ const router = createBrowserRouter([
       // </RedirectIfAuthenticated>
     ),
   },
-  {
-    path: "/upload-payment",
-    element: (
-      // <RedirectIfAuthenticated>
-      <UploadPaymentModal />
-      // </RedirectIfAuthenticated>
-    ),
-  },
+  // {
+  //   path: "/upload-payment",
+  //   element: (
+  //     // <RedirectIfAuthenticated>
+  //     <UploadPaymentModal />
+  //     // </RedirectIfAuthenticated>
+  //   ),
+  // },
 ]);
 
 export default function Route() {

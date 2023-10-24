@@ -31,7 +31,7 @@ const validateSignIn = (input) => {
   }
 };
 
-export default function SignInForm() {
+export default function SignInForm({ setShowSignInModal }) {
   const [input, setInput] = useState({
     email: "",
     password: "",
@@ -50,15 +50,16 @@ export default function SignInForm() {
       setError({});
       const form = { ...input };
       delete form.confirmPassword;
-      await axios.post("auth/signin", form);
+      const res = await axios.post("auth/signin", form);
+      localStorage.setItem("userData", JSON.stringify(res?.data?.user));
       alert("Sign In success");
-      navaigate("/");
+      setShowSignInModal(false);
+      navigate("/");
     } catch (err) {
       console.log(err);
       toast.error(err);
     }
   };
-  console.log(input);
 
   return (
     <div>
@@ -83,7 +84,7 @@ export default function SignInForm() {
       </form>
       <div className="m-5 mt-14">
         <div className="grid justify-center ">
-          <SignInButton />
+          <SignInButton handleSubmitForm={handleSubmitForm} />
         </div>
         <div className="grid justify-center">
           <LoginWithFacebookButton />
