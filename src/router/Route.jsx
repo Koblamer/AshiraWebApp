@@ -75,14 +75,6 @@ const router = createBrowserRouter([
       // </RedirectIfAuthenticated>
     ),
   },
-  // {
-  //   path: "/upload-payment",
-  //   element: (
-  //     // <RedirectIfAuthenticated>
-  //     <UploadPaymentModal />
-  //     // </RedirectIfAuthenticated>
-  //   ),
-  // },
 ]);
 
 export default function Route() {

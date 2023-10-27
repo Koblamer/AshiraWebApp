@@ -49,7 +49,7 @@ export default function ProductItem({ product }) {
                 onClick={() => handlePurchase("order-summary", false)}
                 className="border py-1 px-6 my-2 rounded-md bg-red-500 text-white "
               >
-                Add to card
+                Add to cart
               </button>
             </div>
           </div>

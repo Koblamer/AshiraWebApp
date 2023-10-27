@@ -173,20 +173,20 @@ export default function Header2() {
           </div>
           <div className="dropdown">
             <button className="dropbtn hover:text-stone-400">
-              DINNING ROOM
+              DINING ROOM
             </button>
             <div className="dropdown-content bg-white py-5">
               <div className="flex justify-center py-5">
                 <div className="flex">
                   <div className="flex flex-col mx-16   ">
                     <a
-                      href="product?department=dinningroom&category=seating"
+                      href="product?department=diningroom&category=seating"
                       className=" hover:text-stone-400 my-1"
                     >
                       Seating
                     </a>
                     <a
-                      href="product?department=dinningroom&category=tables"
+                      href="product?department=diningroom&category=tables"
                       className=" hover:text-stone-400 my-1"
                     >
                       Tables
@@ -194,7 +194,7 @@ export default function Header2() {
                   </div>
                   <div className="flex flex-col  mx-16  ">
                     <a
-                      href="product?department=dinningroom&category=lighting"
+                      href="product?department=diningroom&category=lighting"
                       className=" hover:text-stone-400 my-1"
                     >
                       Lighting
