@@ -48,6 +48,7 @@ const AdminProductPage = () => {
         <table>
           <tr>
             <th>ID</th>
+            <th>SKU</th>
             <th>Name</th>
             <th>Image</th>
             <th>Price</th>
@@ -61,8 +62,9 @@ const AdminProductPage = () => {
             product?.map((p, i) => {
               return (
                 <tr key={i}>
-                  <td>{p.id}</td>
-                  <td>{p.name}</td>
+                  <td>{p?.id}</td>
+                  <td>{p?.SKU}</td>
+                  <td>{p?.name}</td>
                   <td>
                     <img
                       src={p?.imageUrl}
