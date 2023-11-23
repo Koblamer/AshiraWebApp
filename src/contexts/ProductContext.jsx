@@ -22,12 +22,18 @@ export default function ProductContextProvider({ children }) {
       qty: data?.qty,
     };
 
-    const newArray = [...shoppingCart];
-    newArray.push(product);
-    setShoppingCart(newArray);
+    const findProductIndex = shoppingCart.findIndex((p) => p.id == data?.id);
 
-    // JSON.stringify คือการแปลงค่าต่างๆให้เป็นข้อความ เพราะ Local storage เก็บค่าได้แต่ String
-    localStorage.setItem("shoppingCart", JSON.stringify(newArray));
+    if (findProductIndex !== -1) {
+      increaseProductQty(data?.id);
+    } else {
+      const newArray = [...shoppingCart];
+      newArray.push(product);
+      setShoppingCart(newArray);
+
+      // JSON.stringify คือการแปลงค่าต่างๆให้เป็นข้อความ เพราะ Local storage เก็บค่าได้แต่ String
+      localStorage.setItem("shoppingCart", JSON.stringify(newArray));
+    }
   };
 
   const removeProduct = async (id) => {
@@ -38,7 +44,7 @@ export default function ProductContextProvider({ children }) {
   };
 
   const increaseProductQty = async (id) => {
-    // หา Index ใน Array จาก id ที่ส่งมา
+    // หา Index ใน Array จาก id ที่ส่งมาs
     const findProductIndex = shoppingCart.findIndex((p) => p.id == id);
     shoppingCart[findProductIndex].qty++;
 
@@ -52,16 +58,21 @@ export default function ProductContextProvider({ children }) {
     const findProductIndex = shoppingCart.findIndex((p) => p.id == id);
     shoppingCart[findProductIndex].qty--;
 
-    const newArray = [...shoppingCart];
+    if (shoppingCart[findProductIndex].qty === 0) {
+      removeProduct(id);
+    } else {
+      const newArray = [...shoppingCart];
 
-    setShoppingCart(newArray);
-    localStorage.setItem("shoppingCart", JSON.stringify(newArray));
+      setShoppingCart(newArray);
+      localStorage.setItem("shoppingCart", JSON.stringify(newArray));
+    }
   };
 
   return (
     <ProductContext.Provider
       value={{
         shoppingCart,
+        setShoppingCart,
         addProduct,
         removeProduct,
         increaseProductQty,

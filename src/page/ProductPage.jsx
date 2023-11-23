@@ -6,6 +6,24 @@ import ShowProductLimit from "../components/ProductLists/ShowProductLimit";
 
 import { useNavigate } from "react-router-dom";
 
+// const mock = [
+//   {
+//     id: 1,
+//     name: 'Table1'
+//     videoUrl: 'http://xxxx.com'
+//   },
+//   {
+//     id: 2,
+//     name: 'Table2'
+//     videoUrl: 'http://xxxx.com'
+//   },
+//   {
+//     id: 2,
+//     name: 'Table2'
+//     videoUrl: 'http://xxxx.com'
+//   },
+// ]
+
 const ProductsPage = () => {
   const navigate = useNavigate();
   const [product, setProduct] = useState(null);
@@ -15,12 +33,8 @@ const ProductsPage = () => {
   let params = new URLSearchParams(search);
   let department = params.get("department");
   let category = params.get("category");
-  console.log(search);
-  console.log("DEPARTMENT", department);
-  console.log("CAREGORY", category);
 
   const goToProductDetails = (id) => {
-    console.log(id);
     navigate(`/product-details?id=${id}`);
   };
 
@@ -28,7 +42,8 @@ const ProductsPage = () => {
     const res = await axios.get(
       `/product?department=${department || "allproducts"}&category=${category}`
     );
-    console.log("Product =", res?.data?.products);
+
+    console.log("Product =");
     setProduct(res?.data?.products);
   }, [category, department]);
 

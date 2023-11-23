@@ -34,8 +34,8 @@ export default function ShoppingCart() {
       {shoppingCart?.length > 0 &&
         shoppingCart?.map((p, i) => {
           return (
-            <>
-              <div className="grid grid-cols-6 my-6" key={i}>
+            <div key={i}>
+              <div className="grid grid-cols-6 my-6">
                 <div
                   className="flex items-center text-sm cursor-pointer "
                   onClick={() => handleRemoveProduct(p)}
@@ -50,7 +50,9 @@ export default function ShoppingCart() {
                   />
                 </div>
                 <div className="flex items-center">{p?.name}</div>
-                <div className="flex items-center">{p?.price}</div>
+                <div className="flex items-center">
+                  {p?.price?.toLocaleString("en-US")}
+                </div>
                 <div className="flex items-center text-sm">
                   <span
                     className="text-sm mx-2 cursor-pointer"
@@ -66,10 +68,12 @@ export default function ShoppingCart() {
                     +
                   </span>
                 </div>
-                <div className="flex items-center">{p?.qty * p?.price}</div>
+                <div className="flex items-center">
+                  {(p?.qty * p?.price).toLocaleString("en-US")}
+                </div>
               </div>
               <hr />
-            </>
+            </div>
           );
         })}
     </>

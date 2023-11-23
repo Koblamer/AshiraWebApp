@@ -9,7 +9,7 @@ export default function SignUpModal(props) {
       <div className="shadow-md modal-content">
         <SignUpExit toggleSignUpModal={props.toggleSignUpModal} />
         <SignUpContent />
-        <SignUpForm />
+        <SignUpForm setShowSignUpModal={props.setShowSignUpModal} />
         <SignInContainer
           closeSignUpAndBackToSignIn={props.closeSignUpAndBackToSignIn}
         />

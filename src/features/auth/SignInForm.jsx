@@ -51,7 +51,13 @@ export default function SignInForm({ setShowSignInModal }) {
       const form = { ...input };
       delete form.confirmPassword;
       const res = await axios.post("auth/signin", form);
+
       localStorage.setItem("userData", JSON.stringify(res?.data?.user));
+      localStorage.setItem(
+        "accessToken",
+        JSON.stringify(res?.data?.accessToken)
+      );
+
       alert("Sign In success");
       setShowSignInModal(false);
       navigate("/");

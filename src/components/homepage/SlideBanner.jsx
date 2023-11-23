@@ -15,7 +15,7 @@ export default function SlideBanner() {
         delay: 9000,
         disableOnInteraction: true,
       }}
-      onSlideChange={() => console.log("slide change")}
+      onSlideChange={() => null}
       onSwiper={(swiper) => console.log(swiper)}
     >
       <SwiperSlide>

@@ -22,7 +22,7 @@ export default function OrderSummaryPayment({ setIsOpenPaymentModal }) {
       <hr className="mx-5" />
       <div className="my-5 font-semibold mx-10 flex justify-between">
         <div>Subtotal</div>
-        <div>{sumSubTotal()}</div>
+        <div>฿ {sumSubTotal().toLocaleString("en-US")}</div>
         {/* <Subtotal /> */}
       </div>
       <hr className="mx-5" />
@@ -33,7 +33,7 @@ export default function OrderSummaryPayment({ setIsOpenPaymentModal }) {
       </div>
       <div className="my-5 mx-10 flex justify-between">
         <div>Total</div>
-        <div>{sumSubTotal()}</div>
+        <div>฿ {sumSubTotal().toLocaleString("en-US")}</div>
         {/* <Total /> */}
       </div>
       <div className=" flex justify-center">

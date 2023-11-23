@@ -12,6 +12,8 @@ import PaymentPage from "../page/PaymentPage";
 import AdminLayout from "../layout/AdminLayout";
 import AdminPage from "../page/AdminPage";
 import AdminOrderPage from "../page/Admin/AdminOrderPage";
+import OrderStatusPage from "../page/OrderStatusPage";
+import AdminProductPage from "../page/Admin/AdminProductPage";
 // import UploadPaymentModal from "../page/UploadPaymentModal";
 
 const router = createBrowserRouter([
@@ -28,12 +30,20 @@ const router = createBrowserRouter([
   {
     path: "/admin",
     element: <AdminLayout />,
-    children: [{ path: "order", element: <AdminOrderPage /> }],
+    children: [
+      { path: "order", element: <AdminOrderPage /> },
+      { path: "product", element: <AdminProductPage /> },
+    ],
   },
   {
     path: "/product",
     element: <Layout />,
     children: [{ path: "", element: <ProductPage /> }],
+  },
+  {
+    path: "/order-status",
+    element: <Layout />,
+    children: [{ path: "", element: <OrderStatusPage /> }],
   },
   {
     path: "/signin",

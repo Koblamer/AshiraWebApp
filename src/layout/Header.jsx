@@ -9,6 +9,7 @@ import SignInModal from "../page/SignInModal";
 import SignUpModal from "../page/SignUpModal";
 import { useState } from "react";
 import { useProduct } from "../hooks/useProduct";
+// import { useEffect } from "react";
 
 export default function Header() {
   const navigate = useNavigate();
@@ -16,12 +17,25 @@ export default function Header() {
   const [showSignInModal, setShowSignInModal] = useState(false);
   const [showSignUpModal, setShowSignUpModal] = useState(false);
 
+  const userData = JSON.parse(localStorage.getItem("userData"));
+  // const accessToken = JSON.parse(localStorage.getItem("accessToken"));
+
+  console.log("userData =", userData);
+
   const goToHomePage = () => {
     navigate("/");
   };
 
+  const goToOrderStatusPage = () => {
+    navigate("/order-status");
+  };
+
   const goToOrderSummaryPage = () => {
     navigate("/order-summary");
+  };
+
+  const goToAdminPage = () => {
+    navigate("/admin");
   };
 
   const toggleSignInModal = () => {
@@ -38,11 +52,44 @@ export default function Header() {
     setShowSignUpModal(false);
   };
 
+  const logout = () => {
+    localStorage.removeItem("userData");
+    localStorage.removeItem("accessToken");
+    navigate("/");
+  };
+
+  // useEffect(() => {
+
+  // },[]);
+
   return (
     <header className="px-4 bg-white sticky top-0 z-30 text-neutral-500 cursor-default">
       <div className="flex justify-end text-xs">
+        {userData?.role === "ADMIN" ? (
+          <div
+            className="pr-2 text-stone-300  hover:text-stone-400 "
+            onClick={goToAdminPage}
+          >
+            ADMIN PAGE
+          </div>
+        ) : (
+          <div
+            className="pr-2 text-stone-300  hover:text-stone-400 "
+            onClick={goToOrderStatusPage}
+          >
+            ORDER CHECK
+          </div>
+        )}
         <div className="pr-2 text-stone-300  hover:text-stone-400 ">ABOUT</div>
-        <div className=" text-stone-300  hover:text-stone-400">CONTACT</div>
+        <div className="pr-2 text-stone-300  hover:text-stone-400">CONTACT</div>
+        {userData && (
+          <div
+            className=" text-stone-300  hover:text-stone-400"
+            onClick={logout}
+          >
+            LOGOUT
+          </div>
+        )}
       </div>
 
       <hr className=" justify-item-center" />
@@ -59,7 +106,7 @@ export default function Header() {
 
       <div className="flex justify-between px-20 py-2">
         <div className="dropdown">
-          <button className="dropbtn hover:text-stone-400">ALL PRODUCTS</button>
+          <button className="dropbtn hover:text">ALL PRODUCTS</button>
           <div className="dropdown-content bg-white py-5">
             <div className="flex justify-center py-5">
               <div className="flex">
@@ -226,7 +273,7 @@ export default function Header() {
                     Bed & Mattresses
                   </a>
                   <a
-                    href="product?department=bedroom&category=setting"
+                    href="product?department=bedroom&category=seating"
                     className=" hover:text-stone-400 my-1"
                   >
                     Seating
@@ -341,12 +388,17 @@ export default function Header() {
           <div className="justify-items-start py-1 pl-5 pr-20 hover:text-stone-400 ">
             <FontAwesomeIcon icon={faMagnifyingGlass} />
           </div>
-          <div
-            className="hover:text-stone-400 py-1"
-            onClick={toggleSignInModal}
-          >
-            SIGN IN
-          </div>
+          {userData ? (
+            <div className="py-1">{userData?.firstName}</div>
+          ) : (
+            <div
+              className="hover:text-stone-400 py-1"
+              onClick={toggleSignInModal}
+            >
+              SIGN IN
+            </div>
+          )}
+
           <div
             className="justify-items-end py-1 pl-5 hover:text-stone-400 cursor-pointer"
             onClick={goToOrderSummaryPage}
@@ -367,6 +419,7 @@ export default function Header() {
         <SignUpModal
           toggleSignUpModal={toggleSignUpModal}
           toggleSignInModal={toggleSignInModal}
+          setShowSignUpModal={setShowSignUpModal}
           closeSignUpAndBackToSignIn={closeSignUpAndBackToSignIn}
         />
       )}

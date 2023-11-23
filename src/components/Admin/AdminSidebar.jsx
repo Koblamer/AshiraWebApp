@@ -4,7 +4,7 @@ export default function AdminSidebar() {
     <div id="mySidenav" className="sidenav">
       <div className="pl-5 pb-4 text-sm">User: {userAdmin?.email}</div>
       <a href="/admin/order">Orders</a>
-      <a href="#">Products</a>
+      <a href="/admin/product">Products</a>
       <a href="#">Users</a>
     </div>
   );

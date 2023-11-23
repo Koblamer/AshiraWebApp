@@ -30,7 +30,9 @@ export default function ProductItem({ product }) {
           <div>
             <div className="font-bold text-2xl ">{product?.name}</div>
 
-            <div className="my-2">฿ {product?.price}</div>
+            <div className="my-2">
+              ฿ {product?.price?.toLocaleString("en-US")}
+            </div>
 
             <div>How to get it</div>
             <div className="border py-2 px-10 my-2 rounded-md">

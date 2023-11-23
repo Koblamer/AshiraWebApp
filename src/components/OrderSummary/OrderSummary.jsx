@@ -1,12 +1,21 @@
 import { useNavigate } from "react-router-dom";
 import { useProduct } from "../../hooks/useProduct";
+import { useState } from "react";
 
 export default function OrderSummary() {
   const navigate = useNavigate();
+  const [hasAddress, setHasAddress] = useState(true);
   const { shoppingCart } = useProduct();
 
   const handleOnClick = (page) => {
-    navigate(`/${page}`, true);
+    const userAddress = JSON.parse(localStorage.getItem("userAddress"));
+
+    if (userAddress) {
+      setHasAddress(true);
+      navigate(`/${page}`, true);
+    } else {
+      setHasAddress(false);
+    }
   };
 
   const sumSubTotal = () => {
@@ -28,7 +37,7 @@ export default function OrderSummary() {
       <hr className="mx-5" />
       <div className="my-5 font-semibold mx-10 flex justify-between">
         <div>Subtotal</div>
-        <div>{sumSubTotal()}</div>
+        <div>฿ {sumSubTotal().toLocaleString("en-US")}</div>
         {/* <Subtotal /> */}
       </div>
       <hr className="mx-5" />
@@ -39,10 +48,10 @@ export default function OrderSummary() {
       </div>
       <div className="my-5 mx-10 flex justify-between">
         <div>Total</div>
-        <div>{sumSubTotal()}</div>
+        <div>฿ {sumSubTotal().toLocaleString("en-US")}</div>
         {/* <Total /> */}
       </div>
-      <div className=" flex justify-center">
+      <div className="flex justify-center">
         <button
           onClick={() => handleOnClick("payment")}
           className="border py-1 px-6 my-2 rounded-md w-48 bg-green-500 text-white"
@@ -50,6 +59,11 @@ export default function OrderSummary() {
           Proceed to checkout
         </button>
       </div>
+      {!hasAddress && (
+        <div className="flex justify-center">
+          <div className="text-red-500">Please inform your address</div>
+        </div>
+      )}
     </>
   );
 }

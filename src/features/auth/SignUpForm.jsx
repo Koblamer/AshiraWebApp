@@ -37,7 +37,7 @@ const validateSignUp = (input) => {
   }
 };
 
-export default function SignUpForm() {
+export default function SignUpForm({ setShowSignUpModal }) {
   const [input, setInput] = useState({
     firstName: "",
     lastName: "",
@@ -65,15 +65,26 @@ export default function SignUpForm() {
       setError({});
       const form = { ...input };
       delete form.confirmPassword;
-      await axios.post("auth/signup", form);
+      const res = await axios.post("auth/signup", form);
+      console.log("res =", res);
+
+      localStorage.setItem("userData", JSON.stringify(res?.data?.user));
+      localStorage.setItem(
+        "accessToken",
+        JSON.stringify(res?.data?.accessToken)
+      );
+
       alert("Register success");
       navigate("/");
+      setShowSignUpModal(false);
     } catch (err) {
       console.log(err);
       toast.error(err);
     }
   };
+
   console.log(input);
+
   return (
     <div>
       <form className="grid justify-center m-10 " onSubmit={handleSubmitForm}>

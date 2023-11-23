@@ -15,13 +15,22 @@ export default function Header2() {
   const { shoppingCart } = useProduct();
   const [showSignInModal, setShowSignInModal] = useState(false);
   const [showSignUpModal, setShowSignUpModal] = useState(false);
+  const userData = JSON.parse(localStorage.getItem("userData"));
 
   const goToHomePage = () => {
     navigate("/");
   };
 
+  const goToOrderStatusPage = () => {
+    navigate("/order-status");
+  };
+
   const goToOrderSummaryPage = () => {
     navigate("/order-summary");
+  };
+
+  const goToAdminPage = () => {
+    navigate("/admin");
   };
 
   const toggleSignInModal = () => {
@@ -38,11 +47,40 @@ export default function Header2() {
     setShowSignUpModal(false);
   };
 
+  const logout = () => {
+    localStorage.removeItem("userData");
+    localStorage.removeItem("accessToken");
+    navigate("/");
+  };
+
   return (
     <header className="px-4 bg-white sticky top-0 z-30 text-neutral-500 cursor-default">
       <div className="flex justify-end text-xs">
+        {userData?.role === "ADMIN" ? (
+          <div
+            className="pr-2 text-stone-300  hover:text-stone-400 "
+            onClick={goToAdminPage}
+          >
+            ADMIN PAGE
+          </div>
+        ) : (
+          <div
+            className="pr-2 text-stone-300  hover:text-stone-400 "
+            onClick={goToOrderStatusPage}
+          >
+            ORDER CHECK
+          </div>
+        )}
         <div className="pr-2 text-stone-300  hover:text-stone-400 ">ABOUT</div>
-        <div className=" text-stone-300  hover:text-stone-400">CONTACT</div>
+        <div className="pr-2 text-stone-300  hover:text-stone-400">CONTACT</div>
+        {userData && (
+          <div
+            className=" text-stone-300  hover:text-stone-400"
+            onClick={logout}
+          >
+            LOGOUT
+          </div>
+        )}
       </div>
 
       <hr className=" justify-item-center" />
@@ -227,7 +265,7 @@ export default function Header2() {
                       Bed & Mattresses
                     </a>
                     <a
-                      href="product?department=bedroom&category=setting"
+                      href="product?department=bedroom&category=seating"
                       className=" hover:text-stone-400 my-1"
                     >
                       Seating
@@ -345,12 +383,16 @@ export default function Header2() {
             <div className="justify-items-start py-1 pl-5 pr-20 hover:text-stone-400 ">
               <FontAwesomeIcon icon={faMagnifyingGlass} />
             </div>
-            <div
-              className="hover:text-stone-400 py-1"
-              onClick={toggleSignInModal}
-            >
-              SIGN IN
-            </div>
+            {userData ? (
+              <div className="py-1">{userData?.firstName}</div>
+            ) : (
+              <div
+                className="hover:text-stone-400 py-1"
+                onClick={toggleSignInModal}
+              >
+                SIGN IN
+              </div>
+            )}
             <div
               className="justify-items-end py-1 pl-5 hover:text-stone-400  cursor-pointer"
               onClick={goToOrderSummaryPage}

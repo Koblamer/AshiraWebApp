@@ -4,9 +4,14 @@ import UploadPaymentInput from "./UploadPaymentInput";
 import UploadPaymentButton from "./UploadPaymentButton";
 import Joi from "joi";
 import UploadPaymentErrorMessage from "./UploadPaymentErrorMessage";
-import axios from "../../config/axios";
+
 import { useNavigate } from "react-router-dom";
 import { useProduct } from "../../hooks/useProduct";
+import { addOrder } from "../../api/order";
+import { ORDER_STATUS } from "../../constant";
+import { useRef } from "react";
+import { uploadImage } from "../../api/image";
+import { addAddress } from "../../api/address";
 
 const UploadPaymentSchema = Joi.object({
   destinationBank: Joi.string().trim().required(),
@@ -38,8 +43,11 @@ const validateUploadPayment = (input) => {
   }
 };
 
-export default function UploadPaymentForm({ setIsOpenPaymentModal }) {
-  const { shoppingCart } = useProduct();
+export default function UploadPaymentForm({
+  orderNumber,
+  setIsOpenPaymentModal,
+}) {
+  const { shoppingCart, setShoppingCart } = useProduct();
   const [input, setInput] = useState({
     destinationBank: "",
     sourceBank: "",
@@ -49,7 +57,9 @@ export default function UploadPaymentForm({ setIsOpenPaymentModal }) {
     amount: "",
     upload: "",
     note: "",
+    file: null,
   });
+  const fileEl = useRef(null);
   const navigate = useNavigate();
   const [error, setError] = useState({});
 
@@ -74,24 +84,43 @@ export default function UploadPaymentForm({ setIsOpenPaymentModal }) {
 
       console.log("handleSubmitForm validationError =", validationError);
 
-      // if (validationError) {
-      //   return setError(validationError);
-      // }
-
       setError({});
-      // const form = { ...input };
 
       const userData = JSON.parse(localStorage.getItem("userData"));
-      console.log("userData =", userData);
+      const userAddress = JSON.parse(localStorage.getItem("userAddress"));
+      const addressPayload = {
+        userId: userData?.id,
+        address: userAddress.address,
+        province: userAddress.province,
+        district: userAddress.district,
+        sub_district: userAddress.sub_district,
+        post_code: userAddress.post_code,
+      };
+
+      const resAddAddress = await addAddress(addressPayload);
+
+      console.log("resAddAddress =", resAddAddress);
+
+      const formData = new FormData();
+      formData.append("image", input.file);
+
+      const resUploadSlipPayment = await uploadImage(formData);
+
       const productPayload = {
+        orderNumber: orderNumber,
         userId: userData?.id,
         total: sumSubTotal(),
-        orderStatus: "PENDDING",
+        orderStatus: ORDER_STATUS.PROCESSING,
         products: shoppingCart,
+        slipPayment: resUploadSlipPayment?.imageUrl,
       };
-      const res = await axios.post("order/add", productPayload);
+      const res = await addOrder(productPayload);
 
-      // await axios.post("auth/UploadPayment", form);
+      if (res?.status === 200) {
+        setShoppingCart([]);
+        localStorage.removeItem("shoppingCart");
+      }
+
       alert("Payment Successful");
       setIsOpenPaymentModal(false);
       navigate("/");
@@ -163,22 +192,38 @@ export default function UploadPaymentForm({ setIsOpenPaymentModal }) {
         </div>
 
         <div className="flex justify-between">
-          <UploadPaymentInput
-            placeholder="Upload Receipt *"
-            value={input.uploadReceipt}
-            onChange={(e) =>
-              setInput({ ...input, uploadReceipt: e.target.value })
-            }
-          />
-          <div className=" text-[10px]">
+          <div className="text-[10px]">
+            {input?.file ? (
+              <div
+                onClick={() => fileEl.current.click()}
+                className="text-sm cursor-pointer max-h-52 overflow-hidden pl-4 py-2"
+              >
+                File Name : {input.file?.name}
+              </div>
+            ) : (
+              <div className="flex justify-center my-2 ">
+                <button
+                  type="button"
+                  onClick={() => fileEl.current.click()}
+                  className="text-center text-xs  rounded-md py-1 w-48 m-1 border border-stone-400 hover:border-stone-400 hover:text-stone-400 "
+                >
+                  Add Slip payment
+                </button>
+              </div>
+            )}
             <input
               type="file"
               id="PaymentSlip"
               name="PaymentSlip"
-              onChange={(e) => console.log(e)}
+              className="hidden"
+              ref={fileEl}
+              onChange={(e) => {
+                if (e.target.files[0]) {
+                  setInput({ ...input, file: e.target.files[0] });
+                }
+              }}
             />
           </div>
-          {/* <div className=" text-[10px]">choose file</div> */}
         </div>
 
         <div>
