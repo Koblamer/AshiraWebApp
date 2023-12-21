@@ -20,7 +20,6 @@ const signInSchema = Joi.object({
 
 const validateSignIn = (input) => {
   const { error } = signInSchema.validate(input, { abortEarly: false });
-
   if (error) {
     const result = error.details.reduce((acc, el) => {
       const { message, path } = el;
@@ -48,15 +47,15 @@ export default function SignInForm({ setShowSignInModal }) {
         return setError(validationError);
       }
       setError({});
-      const form = { ...input };
-      delete form.confirmPassword;
-      const res = await axios.post("auth/signin", form);
+      const res = await axios.post("auth/signin", input);
 
       localStorage.setItem("userData", JSON.stringify(res?.data?.user));
       localStorage.setItem(
         "accessToken",
         JSON.stringify(res?.data?.accessToken)
       );
+
+      //accessToken
 
       alert("Sign In success");
       setShowSignInModal(false);
@@ -76,7 +75,10 @@ export default function SignInForm({ setShowSignInModal }) {
             value={input.email}
             onChange={(e) => setInput({ ...input, email: e.target.value })}
           />
-          {error.email && <InputErrorMessage message={error.email} />}
+          {
+            error.email && <InputErrorMessage message={error.email} />
+            //conditional rendering
+          }
         </div>
         <div className="my-2">
           <SignInInput
@@ -99,29 +101,3 @@ export default function SignInForm({ setShowSignInModal }) {
     </div>
   );
 }
-
-// import { useState } from "react";
-// import { toast } from "react-toastify";
-// import SignInButton from "../auth/SignInButton";
-// import SignInput from "../auth/SignInInput";
-// import { useAuth } from "../../hooks/use-auth";
-
-// export default function LoginForm() {
-//   //   const [input, setInput] = useState({
-//   //     emailOrMobile: "",
-//   //     password: "",
-//   //   });
-
-//   //   const { login } = useAuth();
-
-//   //   const handleSubmitForm = (e) => {
-//   //     e.preventDefault();
-//   //     login(input).catch((err) => {
-//   //       toast.error(err.response.data.message);
-//   //     });
-//   //   };
-
-//   return (
-
-//   );
-// }

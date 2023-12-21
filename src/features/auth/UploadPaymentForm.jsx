@@ -2,8 +2,8 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 import UploadPaymentInput from "./UploadPaymentInput";
 import UploadPaymentButton from "./UploadPaymentButton";
-import Joi from "joi";
 import UploadPaymentErrorMessage from "./UploadPaymentErrorMessage";
+import Joi from "joi";
 
 import { useNavigate } from "react-router-dom";
 import { useProduct } from "../../hooks/useProduct";
@@ -11,7 +11,7 @@ import { addOrder } from "../../api/order";
 import { ORDER_STATUS } from "../../constant";
 import { useRef } from "react";
 import { uploadImage } from "../../api/image";
-import { addAddress } from "../../api/address";
+import DatePicker from "react-datepicker";
 
 const UploadPaymentSchema = Joi.object({
   destinationBank: Joi.string().trim().required(),
@@ -53,7 +53,7 @@ export default function UploadPaymentForm({
     sourceBank: "",
     senderAccountNumber: "",
     senderName: "",
-    transactionDate: "",
+    transactionDate: new Date(),
     amount: "",
     upload: "",
     note: "",
@@ -87,19 +87,6 @@ export default function UploadPaymentForm({
       setError({});
 
       const userData = JSON.parse(localStorage.getItem("userData"));
-      const userAddress = JSON.parse(localStorage.getItem("userAddress"));
-      const addressPayload = {
-        userId: userData?.id,
-        address: userAddress.address,
-        province: userAddress.province,
-        district: userAddress.district,
-        sub_district: userAddress.sub_district,
-        post_code: userAddress.post_code,
-      };
-
-      const resAddAddress = await addAddress(addressPayload);
-
-      console.log("resAddAddress =", resAddAddress);
 
       const formData = new FormData();
       formData.append("image", input.file);
@@ -113,6 +100,12 @@ export default function UploadPaymentForm({
         orderStatus: ORDER_STATUS.PROCESSING,
         products: shoppingCart,
         slipPayment: resUploadSlipPayment?.imageUrl,
+        destinationBank: input.destinationBank,
+        sourceBank: input.sourceBank,
+        senderAccountNumber: input.senderAccountNumber,
+        senderName: input.senderName,
+        transactionDate: input.transactionDate,
+        amount: input.amount,
       };
       const res = await addOrder(productPayload);
 
@@ -121,7 +114,7 @@ export default function UploadPaymentForm({
         localStorage.removeItem("shoppingCart");
       }
 
-      alert("Payment Successful");
+      alert(`Payment Successful, Order Number : ${orderNumber}`);
       setIsOpenPaymentModal(false);
       navigate("/");
     } catch (err) {
@@ -175,12 +168,20 @@ export default function UploadPaymentForm({
           />
         </div>
         <div>
-          <UploadPaymentInput
+          {/* <UploadPaymentInput
             placeholder="Transaction Date *"
             value={input.transactionDate}
             onChange={(e) =>
               setInput({ ...input, transactionDate: e.target.value })
             }
+          /> */}
+          <div className="pt-3 pl-3">Transaction Date *</div>
+          <DatePicker
+            className="cursor-pointer p-4 inputUnderLine border-neutral-500 hover:border-stone-400 hover:text-stone-400 "
+            selected={input.transactionDate}
+            onChange={(date) => {
+              setInput({ ...input, transactionDate: date });
+            }}
           />
         </div>
         <div>

@@ -1,16 +1,27 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
+import UpdateOrderModal from "./component/UpdateOrderModal";
+import moment from "moment";
 
 const AdminOrderPage = () => {
   const [orderDetails, setOrderDetails] = useState(null);
+  const [updateOrderId, setUpdateOrderId] = useState(null);
+  const [isOpenUpdateModal, setIsOpenUpdateModal] = useState(false);
 
   const getOrderDetails = async () => {
+    console.log("getOrderDetails");
     const res = await axios.get("/order");
     setOrderDetails(res.data.orders);
-    console.log(res);
+    console.log("res =", res);
+  };
+
+  const openUpdateModal = async (id) => {
+    setUpdateOrderId(id);
+    setIsOpenUpdateModal(true);
   };
 
   useEffect(() => {
+    console.log("useEffect");
     getOrderDetails();
   }, []);
 
@@ -22,8 +33,8 @@ const AdminOrderPage = () => {
           <tr>
             <th>OrderID</th>
             <th>User ID</th>
+            <th>Order Number</th>
             <th>Order Status</th>
-            <th>Payment ID</th>
             <th>Total</th>
             <th>Created Date</th>
             <th>Update Date</th>
@@ -35,22 +46,17 @@ const AdminOrderPage = () => {
                 <tr key={i}>
                   <td>{order.id}</td>
                   <td>{order.userId}</td>
+                  <td>{order.orderNumber}</td>
+                  <td>{order.orderStatus}</td>
+                  <td>฿ {order.total.toLocaleString("en-US")}</td>
+                  <td>{moment(order.createdAt).format("YYYY/MM/DD hh:ss")}</td>
+                  <td>{moment(order.updatedAt).format("YYYY/MM/DD hh:ss")}</td>
                   <td>
-                    <select name="orderStatus" id="orderStatus" className="p-1">
-                      <option value="PENDING">Pending</option>
-                      <option value="PAYMENTSUCCESSFULL">
-                        Payment Successfull
-                      </option>
-                    </select>
-                  </td>
-                  {/* <td>{order.orderStatus}</td> */}
-                  <td>{order.paymentId}</td>
-                  <td>{order.total}</td>
-                  <td>{order.createdAt}</td>
-                  <td>{order.updatedAt}</td>
-                  <td>
-                    <button className="border px-2 py-1 rounded-md bg-green-500 text-white">
-                      View
+                    <button
+                      onClick={() => openUpdateModal(order?.id)}
+                      className="border px-2 py-1 rounded-md bg-blue-500 text-white"
+                    >
+                      Edit
                     </button>
                   </td>
                 </tr>
@@ -58,6 +64,13 @@ const AdminOrderPage = () => {
             })}
         </table>
       </div>
+      {isOpenUpdateModal && (
+        <UpdateOrderModal
+          updateOrderId={updateOrderId}
+          setIsOpenUpdateModal={setIsOpenUpdateModal}
+          getOrderDetails={getOrderDetails}
+        />
+      )}
     </div>
   );
 };

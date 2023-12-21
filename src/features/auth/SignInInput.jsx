@@ -21,5 +21,5 @@ SignInInput.propTypes = {
   placeholder: PropTypes.string,
   type: PropTypes.string,
   value: PropTypes.string,
-  onChange: PropTypes.string,
+  onChange: PropTypes.func,
 };

@@ -9,6 +9,7 @@ import SignInModal from "../page/SignInModal";
 import SignUpModal from "../page/SignUpModal";
 import { useState } from "react";
 import { useProduct } from "../hooks/useProduct";
+import OrderStatus from "../components/OrderStatus/OrderStatus";
 // import { useEffect } from "react";
 
 export default function Header() {
@@ -65,31 +66,24 @@ export default function Header() {
   return (
     <header className="px-4 bg-white sticky top-0 z-30 text-neutral-500 cursor-default">
       <div className="flex justify-end text-xs">
-        {userData?.role === "ADMIN" ? (
+        {userData?.role === "ADMIN" && (
           <div
             className="pr-2 text-stone-300  hover:text-stone-400 "
             onClick={goToAdminPage}
           >
             ADMIN PAGE
           </div>
-        ) : (
-          <div
-            className="pr-2 text-stone-300  hover:text-stone-400 "
-            onClick={goToOrderStatusPage}
-          >
-            ORDER CHECK
-          </div>
         )}
         <div className="pr-2 text-stone-300  hover:text-stone-400 ">ABOUT</div>
         <div className="pr-2 text-stone-300  hover:text-stone-400">CONTACT</div>
-        {userData && (
+        {/* {userData && (
           <div
             className=" text-stone-300  hover:text-stone-400"
             onClick={logout}
           >
             LOGOUT
           </div>
-        )}
+        )} */}
       </div>
 
       <hr className=" justify-item-center" />
@@ -389,7 +383,28 @@ export default function Header() {
             <FontAwesomeIcon icon={faMagnifyingGlass} />
           </div>
           {userData ? (
-            <div className="py-1">{userData?.firstName}</div>
+            <div className="dropdown">
+              <div className="py-1">{userData?.firstName}</div>
+
+              <div className="dropdown-content items-center relative dropbtn">
+                <div>
+                  <div
+                    className="pr-2 text-stone-300  hover:text-stone-400 "
+                    onClick={goToOrderStatusPage}
+                  >
+                    ORDER CHECK
+                  </div>
+                  {userData && (
+                    <div
+                      className=" text-stone-300  hover:text-stone-400"
+                      onClick={logout}
+                    >
+                      LOGOUT
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
           ) : (
             <div
               className="hover:text-stone-400 py-1"

@@ -7,7 +7,7 @@ export const addOrder = async (payload) => {
 };
 
 export const searchOrderByNumber = async (orderNumber) => {
-  const url = `/order/${orderNumber}`;
+  const url = `/order/search/${orderNumber}`;
   const res = await axios.get(url);
   return res?.data;
 };

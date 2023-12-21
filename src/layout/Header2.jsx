@@ -384,7 +384,28 @@ export default function Header2() {
               <FontAwesomeIcon icon={faMagnifyingGlass} />
             </div>
             {userData ? (
-              <div className="py-1">{userData?.firstName}</div>
+              <div className="dropdown">
+                <div className="py-1">{userData?.firstName}</div>
+
+                <div className="dropdown-content items-center relative dropbtn">
+                  <div>
+                    <div
+                      className="pr-2 text-stone-300  hover:text-stone-400 "
+                      onClick={goToOrderStatusPage}
+                    >
+                      ORDER CHECK
+                    </div>
+                    {userData && (
+                      <div
+                        className=" text-stone-300  hover:text-stone-400"
+                        onClick={logout}
+                      >
+                        LOGOUT
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
             ) : (
               <div
                 className="hover:text-stone-400 py-1"

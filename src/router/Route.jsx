@@ -3,17 +3,16 @@ import HomePage from "../page/HomePage";
 import { RouterProvider } from "react-router-dom";
 import Layout from "../layout/Layout";
 import ProductPage from "../page/ProductPage";
-// import OrderPage from "../page/OrderPage";
 import SignInModal from "../page/SignInModal";
 import SignUpModal from "../page/SignUpModal";
 import ProductDetailsPage from "../page/ProductDetailsPage";
 import OrderSummaryPage from "../page/OrderSummaryPage";
 import PaymentPage from "../page/PaymentPage";
-import AdminLayout from "../layout/AdminLayout";
 import AdminPage from "../page/AdminPage";
 import AdminOrderPage from "../page/Admin/AdminOrderPage";
 import OrderStatusPage from "../page/OrderStatusPage";
 import AdminProductPage from "../page/Admin/AdminProductPage";
+import ProtectedRoute from "./ProtectRoute";
 // import UploadPaymentModal from "../page/UploadPaymentModal";
 
 const router = createBrowserRouter([
@@ -24,12 +23,12 @@ const router = createBrowserRouter([
   },
   {
     path: "/admin",
-    element: <AdminLayout />,
+    element: <ProtectedRoute />,
     children: [{ path: "", element: <AdminPage /> }],
   },
   {
     path: "/admin",
-    element: <AdminLayout />,
+    element: <ProtectedRoute />,
     children: [
       { path: "order", element: <AdminOrderPage /> },
       { path: "product", element: <AdminProductPage /> },
