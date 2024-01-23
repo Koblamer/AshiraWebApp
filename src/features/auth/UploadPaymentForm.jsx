@@ -84,7 +84,7 @@ export default function UploadPaymentForm({
 
       console.log("handleSubmitForm validationError =", validationError);
 
-      setError({});
+      setError(validationError);
 
       const userData = JSON.parse(localStorage.getItem("userData"));
 

@@ -35,6 +35,7 @@ const AdminOrderPage = () => {
             <th>User ID</th>
             <th>Order Number</th>
             <th>Order Status</th>
+            <th>Payment Status</th>
             <th>Total</th>
             <th>Created Date</th>
             <th>Update Date</th>
@@ -48,6 +49,7 @@ const AdminOrderPage = () => {
                   <td>{order.userId}</td>
                   <td>{order.orderNumber}</td>
                   <td>{order.orderStatus}</td>
+                  <td>{order.paymentStatus}</td>
                   <td>฿ {order.total.toLocaleString("en-US")}</td>
                   <td>{moment(order.createdAt).format("YYYY/MM/DD hh:ss")}</td>
                   <td>{moment(order.updatedAt).format("YYYY/MM/DD hh:ss")}</td>

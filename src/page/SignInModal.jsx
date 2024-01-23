@@ -7,8 +7,8 @@ import SignUpContainer from "../features/auth/SignUpContainer";
 export default function SignInModal(props) {
   console.log(props);
   return (
-    <div className="modal-overlay">
-      <div className="shadow-md modal-content ">
+    <div className="signin-modal-overlay">
+      <div className="shadow-md signin-modal-content ">
         <SignInExit toggleSignInModal={props?.toggleSignInModal} />
         <SignInContent />
         <SignInForm setShowSignInModal={props?.setShowSignInModal} />

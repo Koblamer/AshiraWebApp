@@ -14,13 +14,21 @@ const signInSchema = Joi.object({
   email: Joi.string().email({ tlds: false }),
   password: Joi.string()
     .pattern(/^[a-zA-Z0-9]{6,30}$/)
+    .min(6)
     .trim()
-    .required(),
+    .required()
+    .label("Wrong password")
+    .messages({
+      "string.min": "Must have at least 6 characters",
+      "object.regex": "Password must have a-z, A-Z or 0-9",
+      "string.pattern.base": "Password must have a-z, A-Z or 0-9",
+    }),
 });
 
 const validateSignIn = (input) => {
   const { error } = signInSchema.validate(input, { abortEarly: false });
   if (error) {
+    console.log("error.details =", error.details);
     const result = error.details.reduce((acc, el) => {
       const { message, path } = el;
       acc[path[0]] = message;

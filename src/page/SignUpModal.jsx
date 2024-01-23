@@ -5,8 +5,8 @@ import SignUpExit from "../features/auth/SignUpExit";
 
 export default function SignUpModal(props) {
   return (
-    <div className="modal-overlay">
-      <div className="shadow-md modal-content">
+    <div className="signin-modal-overlay">
+      <div className="shadow-md signin-modal-content">
         <SignUpExit toggleSignUpModal={props.toggleSignUpModal} />
         <SignUpContent />
         <SignUpForm setShowSignUpModal={props.setShowSignUpModal} />

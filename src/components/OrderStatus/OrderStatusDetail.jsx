@@ -11,12 +11,14 @@ export default function OrderStatusDetail({ orderDetail }) {
 
         <div>Payment Status : {orderDetail?.payment?.paymentStatus}</div>
         <div>
-          <img
-            src={orderDetail?.payment?.slipURL}
-            alt="slipPayment"
-            height={600}
-            width={600}
-          />
+          {orderDetail?.payment?.slipURL && (
+            <img
+              src={orderDetail?.payment?.slipURL}
+              alt="slipPayment"
+              height={600}
+              width={600}
+            />
+          )}
         </div>
       </div>
     </>

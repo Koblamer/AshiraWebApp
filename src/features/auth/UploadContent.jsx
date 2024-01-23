@@ -5,9 +5,23 @@ import moment from "moment";
 export default function UploadContent({ orderNumber, setOrderNumber }) {
   const generateOrderNumber = useCallback(() => {
     const year = moment().year();
-    const month = moment().month();
-    const millisecond = moment().milliseconds();
+    let month = 0;
+    let millisecond = 0;
+
+    if (moment().month() + 1 < 10) {
+      month = `0${moment().month() + 1}`;
+    } else {
+      month = moment().month() + 1;
+    }
+
+    if (moment().milliseconds() < 100) {
+      millisecond = `0${moment().milliseconds()}`;
+    } else {
+      millisecond = moment().milliseconds();
+    }
+
     const genNumber = "" + year + month + millisecond;
+
     setOrderNumber(genNumber);
   }, []);
 

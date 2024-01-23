@@ -21,15 +21,16 @@ const router = createBrowserRouter([
     element: <Layout />,
     children: [{ path: "", element: <HomePage /> }],
   },
-  {
-    path: "/admin",
-    element: <ProtectedRoute />,
-    children: [{ path: "", element: <AdminPage /> }],
-  },
+  // {
+  //   path: "/admin",
+  //   element: <ProtectedRoute />,
+  //   children: [{ path: "", element: <AdminPage /> }],
+  // },
   {
     path: "/admin",
     element: <ProtectedRoute />,
     children: [
+      { path: "", element: <AdminPage /> },
       { path: "order", element: <AdminOrderPage /> },
       { path: "product", element: <AdminProductPage /> },
     ],

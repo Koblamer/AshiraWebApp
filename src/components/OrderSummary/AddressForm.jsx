@@ -18,11 +18,12 @@ export default function AddressForm() {
   const getUserAddress = async () => {
     const userData = JSON.parse(localStorage.getItem("userData"));
     const res = await axios.get(`/address/${userData.id}`);
-    if (res.data.address) {
+    const resUser = await axios.get(`/user/${userData.id}`);
+    if (res.data.address && resUser?.data.user) {
       setInput({
-        firstName: userData.firstName,
-        lastName: userData.lastName,
-        mobile: userData.mobile,
+        firstName: resUser?.data.user.firstName,
+        lastName: resUser?.data.user.lastName,
+        mobile: resUser?.data.user.mobile,
         address: res.data.address.address,
         province: res.data.address.province,
         district: res.data.address.district,
@@ -47,17 +48,30 @@ export default function AddressForm() {
         sub_district: userAddress.sub_district,
         post_code: userAddress.post_code,
       };
+      const userPayload = {
+        firstName: input?.firstName,
+        lastName: input?.lastName,
+        mobile: input?.mobile,
+      };
 
       const hasAddress = await axios.get(`/address/${userData.id}`);
 
-      console.log("hasAddress =", hasAddress);
+      // console.log("hasAddress =", hasAddress);
+
+      const resUpdateUser = await axios.patch(
+        `/user/${userData.id}`,
+        userPayload
+      );
+
+      // console.log("resUpdateUser =", resUpdateUser);
 
       if (hasAddress.data.address) {
-        const resAddAddress = await axios.patch(
+        console.log("input =", input);
+        const resUpdateAddress = await axios.patch(
           `/address/${hasAddress.data.address.id}`,
           input
         );
-        if (resAddAddress) {
+        if (resUpdateAddress) {
           alert("Update Address success");
         }
       } else {

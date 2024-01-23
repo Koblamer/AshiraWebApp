@@ -1,16 +1,19 @@
 import { useNavigate } from "react-router-dom";
 import { useProduct } from "../../hooks/useProduct";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
 
 export default function OrderSummary() {
   const navigate = useNavigate();
   const [hasAddress, setHasAddress] = useState(true);
   const { shoppingCart } = useProduct();
+  const userData = JSON.parse(localStorage.getItem("userData"));
 
-  const handleOnClick = (page) => {
-    const userAddress = JSON.parse(localStorage.getItem("userAddress"));
+  const handleOnClick = async (page) => {
+    // const userAddress = JSON.parse(localStorage.getItem("userAddress"));
+    const res = await axios.get(`/address/${userData.id}`);
 
-    if (userAddress) {
+    if (res?.data?.address) {
       setHasAddress(true);
       navigate(`/${page}`, true);
     } else {

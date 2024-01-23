@@ -19,8 +19,13 @@ const signUpSchema = Joi.object({
     .required(),
   password: Joi.string()
     .pattern(/^[a-zA-Z0-9]{6,30}$/)
+    .min(6)
     .trim()
-    .required(),
+    .required()
+    .messages({
+      "string.min": "Must have at least 6 characters",
+      "string.pattern.base": "Password must have a-z, A-Z or 0-9",
+    }),
   confirmPassword: Joi.string().valid(Joi.ref("password")).trim().required(),
 });
 

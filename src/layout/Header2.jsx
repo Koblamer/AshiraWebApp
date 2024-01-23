@@ -9,12 +9,16 @@ import SignInModal from "../page/SignInModal";
 import SignUpModal from "../page/SignUpModal";
 import { useState } from "react";
 import { useProduct } from "../hooks/useProduct";
+// import axios from "axios";
+// import { useEffect } from "react";
 
 export default function Header2() {
   const navigate = useNavigate();
   const { shoppingCart } = useProduct();
   const [showSignInModal, setShowSignInModal] = useState(false);
   const [showSignUpModal, setShowSignUpModal] = useState(false);
+  // const [userData, setUserData] = useState(null);
+
   const userData = JSON.parse(localStorage.getItem("userData"));
 
   const goToHomePage = () => {
@@ -52,6 +56,18 @@ export default function Header2() {
     localStorage.removeItem("accessToken");
     navigate("/");
   };
+
+  // const getUserById = async () => {
+  //   const resUser = await axios.get(`/user/${userDataLocalStorage.id}`);
+
+  //   if (resUser?.data?.user) {
+  //     setUserData(resUser?.data?.user);
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   getUserById();
+  // }, []);
 
   return (
     <header className="px-4 bg-white sticky top-0 z-30 text-neutral-500 cursor-default">
