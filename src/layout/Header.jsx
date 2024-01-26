@@ -9,6 +9,7 @@ import SignInModal from "../page/SignInModal";
 import SignUpModal from "../page/SignUpModal";
 import { useState } from "react";
 import { useProduct } from "../hooks/useProduct";
+import { removeAccessToken } from "../utils/local-storage";
 // import OrderStatus from "../components/OrderStatus/OrderStatus";
 // import { useEffect } from "react";
 // import axios from "axios";
@@ -58,6 +59,8 @@ export default function Header() {
   const logout = () => {
     localStorage.removeItem("userData");
     localStorage.removeItem("accessToken");
+    localStorage.removeItem("shoppingCart");
+    removeAccessToken();
     navigate("/");
   };
 

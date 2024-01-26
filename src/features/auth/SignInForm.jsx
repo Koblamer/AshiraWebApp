@@ -9,6 +9,7 @@ import Joi from "joi";
 import InputErrorMessage from "../auth/InputErrorMessage";
 import axios from "../../config/axios";
 import { useNavigate } from "react-router-dom";
+import { addAccessToken } from "../../utils/local-storage";
 
 const signInSchema = Joi.object({
   email: Joi.string().email({ tlds: false }),
@@ -62,6 +63,7 @@ export default function SignInForm({ setShowSignInModal }) {
         "accessToken",
         JSON.stringify(res?.data?.accessToken)
       );
+      addAccessToken(res?.data?.accessToken);
 
       //accessToken
 

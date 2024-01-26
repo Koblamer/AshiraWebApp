@@ -20,17 +20,17 @@ const UploadPaymentSchema = Joi.object({
     .pattern(/^[0-9]{10}$/)
     .required(),
   senderName: Joi.string().trim().required(),
-  transactionDate: Joi.string()
-    .pattern(/^[0-9]{10}$/)
-    .required(),
+  // transactionDate: Joi.date().format("MM/DD/YYYY"),
+  // transactionDate: Joi.string()
+  //   .pattern(/^[0-9]{10}$/)
+  //   .required(),
   amount: Joi.number().required(),
-  upload: Joi.string().trim().required(),
-  note: Joi.string(),
 });
 
 const validateUploadPayment = (input) => {
   const { error } = UploadPaymentSchema.validate(input, {
     abortEarly: false,
+    allowUnknown: true,
   });
 
   if (error) {
@@ -53,11 +53,11 @@ export default function UploadPaymentForm({
     sourceBank: "",
     senderAccountNumber: "",
     senderName: "",
-    transactionDate: new Date(),
+    // transactionDate: new Date(),
     amount: "",
-    upload: "",
-    note: "",
-    file: null,
+    // upload: "",
+    // note: "",
+    // file: null,
   });
   const fileEl = useRef(null);
   const navigate = useNavigate();
@@ -85,6 +85,8 @@ export default function UploadPaymentForm({
       console.log("handleSubmitForm validationError =", validationError);
 
       setError(validationError);
+
+      if (validationError) return;
 
       const userData = JSON.parse(localStorage.getItem("userData"));
 
@@ -134,7 +136,7 @@ export default function UploadPaymentForm({
               setInput({ ...input, destinationBank: e.target.value })
             }
           />
-          {error.destinationBank && (
+          {error?.destinationBank && (
             <UploadPaymentErrorMessage message={error.destinationBank} />
           )}
         </div>
@@ -144,7 +146,7 @@ export default function UploadPaymentForm({
             value={input.sourceBank}
             onChange={(e) => setInput({ ...input, sourceBank: e.target.value })}
           />
-          {error.sourceBank && (
+          {error?.sourceBank && (
             <UploadPaymentErrorMessage message={error.sourceBank} />
           )}
         </div>
@@ -156,7 +158,7 @@ export default function UploadPaymentForm({
               setInput({ ...input, senderAccountNumber: e.target.value })
             }
           />
-          {error.senderAccountNumber && (
+          {error?.senderAccountNumber && (
             <UploadPaymentErrorMessage message={error.senderAccountNumber} />
           )}
         </div>
